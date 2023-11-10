@@ -1,0 +1,30 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: yes
+  tasks:
+    - name: install passwd package
+      apt:
+        name: passwd
+        state: present
+      when: ansible_distribution not in "Debian, Ubuntu"
+    - name: create group
+      group:
+        name: cloudteam
+        state: present
+
+
+    - name: Create user
+      user:
+        name: anthony007
+        comment: anthony admin
+        group: cloudteam
+
+- hosts: databaseservers
+  become: yes
+  tasks:
+    - name: install apache
+      apt:
+        name: apache2
+        state: present
+        
